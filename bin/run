@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# перейти в корень проекта, независимо от того, откуда запустили
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="${SCRIPT_DIR}/.."
+cd "$ROOT_DIR"
+
+# аргументы
+INPUT="${1:-}"
+if [[ -z "${INPUT}" ]]; then
+  echo "Usage: $0 path/to/input.txt" >&2
+  exit 1
+fi
+if [[ ! -f "${INPUT}" ]]; then
+  echo "Input not found: ${INPUT} (cwd: $(pwd))" >&2
+  exit 1
+fi
+
+# запуск ruby из PATH
+exec /usr/bin/env ruby main.rb "${INPUT}"
